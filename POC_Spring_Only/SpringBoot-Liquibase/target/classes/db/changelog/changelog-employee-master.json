@@ -1,0 +1,20 @@
+{
+  "databaseChangeLog": [
+    {
+      "include": {
+        "file": "/db/changelog/json/create-employee-table-changelog-1.json"
+      }
+    },
+    {
+      "include": {
+        "file": "/db/changelog/json/insert-employee-table-changelog-2.json"
+      }
+    },
+    {
+      "include": {
+        "file": "/db/changelog/json/addColumn-employee-table-changelog-3.json"
+      }
+    }
+  ]
+}
+

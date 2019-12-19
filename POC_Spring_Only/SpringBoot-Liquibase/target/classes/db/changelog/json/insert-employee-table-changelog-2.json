@@ -1,0 +1,43 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "20190613-2",
+        "author": "rkushwah",
+        "changes": [
+          {
+            "insert": {
+              "tableName": "employee",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "valueNumeric": "123"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "firstname",
+                    "value": "John"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "lastname",
+                    "value": "Handrik"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "state",
+                    "value": "MB"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

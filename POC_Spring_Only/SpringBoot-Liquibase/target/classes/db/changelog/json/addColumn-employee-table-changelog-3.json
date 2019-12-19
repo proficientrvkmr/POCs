@@ -1,0 +1,25 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "20190613-3",
+        "author": "rkushwah",
+        "changes": [
+          {
+            "addColumn": {
+              "tableName": "employee",
+              "columns": [
+                {
+                  "column": {
+                    "name": "country",
+                    "type": "varchar(50)"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

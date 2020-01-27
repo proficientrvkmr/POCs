@@ -1,0 +1,264 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  Subnet2:
+    Type: 'AWS::EC2::Subnet::Id'
+    Description: The Subnet Id for lambda functions
+  NotifyEmail:
+    Default: rkushwah@kpmg.com
+    Type: String
+    Description: Email for the CodeDeploy Approvers
+  Subnet1:
+    Type: 'AWS::EC2::Subnet::Id'
+    Description: The Subnet Id for lambda functions
+  SystemProject:
+    Default: qahouseevent
+    Type: String
+    Description: System
+  CFStackName:
+    Default: lake-nona-int-cicd
+    Type: String
+    Description: CF Stack Name for Artifacts to be deployed in the Pipeline
+  PROJECTID:
+    Default: lake-nona-int-cf-project
+    Type: String
+    Description: Project Name for Code Build
+  SubnetId1:
+    Default: subnet-009b434e1c56da2e1
+    Type: String
+    Description: SubNet1 for Lambdas to deploy
+  SubnetId2:
+    Default: subnet-0f9e7fddaecf1bb86
+    Type: String
+    Description: SubNet2 for Lambdas to deploy
+  SecGroup1:
+    Default: sg-01a109d180b54df66
+    Type: String
+    Description: SecGroup1 for Lambdas to deploy
+  SecGroup2:
+    Default: sg-07b1382306906d395
+    Type: String
+    Description: SecGroup2 for Lambdas to deploy
+  ArtifactS3Bucket:
+    Default: lake-nona-integrations-cicd-artifacts
+    Type: String
+    Description: >-
+      A S3 bucket within this AWS account for CodePipeline to put Pipeline
+      artifacts
+  CodeCommitBranch:
+    Default: qa
+    Type: String
+    Description: Enter the CodeCommit repository branch to monitored for changes.
+  NotifyDisplayName:
+    Default: AWSCodeDeployNotify
+    Type: String
+    Description: SNS display name for AWS Code Deploy
+  CodeCommitRepository:
+    Default: lake-nona-integrations
+    Type: String
+    Description: CodeCommit repository name to be monitored for changes.
+  CodeCommitBuildSpec:
+    Default: HOUSE_EVENT_Integrations/buildspec-dev.yml
+    Type: String
+    Description: CodeCommit Build Spec file .
+  VPC:
+    Type: 'AWS::EC2::VPC::Id'
+    Description: The VPC Id for lambda functions
+  BuildEnvironment:
+    Default: 'aws/codebuild/java:openjdk-8'
+    Type: String
+    Description: CF Stack Name
+    AllowedValues:
+      - 'aws/codebuild/python:3.6.5'
+      - 'aws/codebuild/nodejs:10.1.0'
+      - 'aws/codebuild/java:openjdk-8'
+  NotifyTopicName:
+    Default: Lake-Nona-CodeDeploy-Notifications-integrations
+    Type: String
+    Description: SNS topic name for CodeDeploy notifications
+  STAGE:
+    Default: qa
+    Type: String
+    Description: Stage Name
+    AllowedValues:
+      - dev
+      - qa
+      - load
+      - uat
+      - prod
+Description: Lake Nona Integrations Pipeline-Envision Cloudformation template
+Resources:
+  CodeBuildProject:
+    Type: 'AWS::CodeBuild::Project'
+    Properties:
+      Description: 'Code Build Project for ${SystemProject} Integration'
+      ServiceRole: !Sub 'arn:aws:iam::${AWS::AccountId}:role/service-role/CodeBuildRole'
+      Tags:
+        - Key: Name
+          Value:
+            'Fn::Sub': 'BuildCFProject-${AWS::StackName}'
+      Artifacts:
+        Type: CODEPIPELINE
+        Name:
+          'Fn::Sub': '${CodeCommitRepository}-${CodeCommitBranch}'
+      TimeoutInMinutes: 60
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image:
+          Ref: BuildEnvironment
+        Type: LINUX_CONTAINER
+        EnvironmentVariables:
+          - Name: STAGE
+            Value:
+              Ref: STAGE
+          - Name: SystemProject
+            Value:
+              Ref: SystemProject
+          - Name: SubnetId1
+            Value:
+              Ref: SubnetId1
+          - Name: SubnetId2
+            Value:
+              Ref: SubnetId2
+          - Name: SecGroup1
+            Value:
+              Ref: SecGroup1
+          - Name: SecGroup2
+            Value:
+              Ref: SecGroup2
+          - Name: ACCOUNTID
+            Value:
+              'Fn::Sub': '${AWS::AccountId}'
+      Source:
+        BuildSpec:
+          Ref: CodeCommitBuildSpec
+        Type: CODEPIPELINE
+      Name:
+        'Fn::Sub': '${SystemProject}-build-project'
+  ArtifactStore:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName:
+        'Fn::Sub': '${ArtifactS3Bucket}-${SystemProject}-${STAGE}'
+      VersioningConfiguration:
+        Status: Enabled
+  SNSTopicPolicy:
+    Type: 'AWS::SNS::TopicPolicy'
+    Properties:
+      Topics:
+        - Ref: SNSNotificationTopic
+      PolicyDocument:
+        Statement:
+          - Action:
+              - 'sns:Publish'
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+            Resource:
+              Ref: SNSNotificationTopic
+            Effect: Allow
+            Sid: AWSSNSPolicy
+  SNSNotificationTopic:
+    Type: 'AWS::SNS::Topic'
+    Properties:
+      DisplayName:
+        Ref: NotifyDisplayName
+      TopicName:
+        'Fn::Sub': 'NotifyTopicName-${AWS::StackName}'
+      Subscription:
+        - Endpoint:
+            Ref: NotifyEmail
+          Protocol: email
+  CodePipeline:
+    Type: 'AWS::CodePipeline::Pipeline'
+    Properties:
+      Name: !Sub '${SystemProject}-pipeline'
+      RoleArn:
+        'Fn::Sub': 'arn:aws:iam::${AWS::AccountId}:role/CodePipelineIAMRole'
+      Stages:
+        - Name: Source
+          Actions:
+            - ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: CodeCommit
+              Configuration:
+                BranchName:
+                  Ref: CodeCommitBranch
+                RepositoryName:
+                  Ref: CodeCommitRepository
+              Name: Repository
+              OutputArtifacts:
+                - Name:
+                    Ref: STAGE
+        - Name: Build
+          Actions:
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName:
+                  Ref: CodeBuildProject
+              Name: Build
+              InputArtifacts:
+                - Name:
+                    Ref: STAGE
+              OutputArtifacts:
+                - Name: BuildArtifact
+        - Name: Staging
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                ActionMode: CHANGE_SET_REPLACE
+                ChangeSetName:
+                  'Fn::Sub': 'ChangeSet-${AWS::StackName}'
+                RoleArn: !Sub >-
+                  arn:aws:iam::${AWS::AccountId}:role/service-role/CloudformationServiceRole
+                Capabilities: CAPABILITY_IAM
+                StackName:
+                  'Fn::Sub': '${CFStackName}-${SystemProject}-${STAGE}-artifacts'
+                TemplatePath: 'BuildArtifact::template-export_dev.yml'
+              Name: CreateChangeSet
+              InputArtifacts:
+                - Name: BuildArtifact
+              OutputArtifacts:
+                - Name: CreateChangeSet
+        - Name: ReleaseApproval
+          Actions:
+            - ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Version: 1
+                Provider: Manual
+              Configuration:
+                NotificationArn:
+                  Ref: SNSNotificationTopic
+              Name: ManualApproval
+        - Name: Execute-Change-Set
+          Actions:
+            - ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: CloudFormation
+              Configuration:
+                StackName:
+                  'Fn::Sub': '${CFStackName}-${SystemProject}-${STAGE}-artifacts'
+                ActionMode: CHANGE_SET_EXECUTE
+                ChangeSetName:
+                  'Fn::Sub': 'ChangeSet-${AWS::StackName}'
+              Name: Execute-Change-Set
+              InputArtifacts:
+                - Name: BuildArtifact
+              OutputArtifacts:
+                - Name: AppExecuteChangeSet
+      ArtifactStore:
+        Type: S3
+        Location:
+          Ref: ArtifactStore

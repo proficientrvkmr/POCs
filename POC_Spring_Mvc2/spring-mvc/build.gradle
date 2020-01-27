@@ -1,0 +1,24 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.4.RELEASE'
+	id 'java'
+//	id 'jar'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.spring.practice'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+//	implementation group: 'javax', name: 'javaee-web-api', version: '8.0.1'
+	//javax.servlet-api
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

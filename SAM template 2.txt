@@ -1,0 +1,223 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: HouseEvent - Integrations
+Globals:
+  Function:
+    Environment:
+      Variables:
+        ACTIVATE_LOG:
+          Ref: ACTIVATELOG
+        DB_SECRET:
+          Ref: DBSECRET
+        FAILED_FOLDER:
+          Ref: FAILEDFOLDER
+        HOUSE_EVENT_QUEUE:
+          Ref: HouseEventQueueName
+        PROCESSED_FOLDER:
+          Ref: PROCESSEDFOLDER
+        REGION:
+          Ref: REGION
+    MemorySize: 3000
+    Timeout: 900
+    VpcConfig:
+      SecurityGroupIds:
+      - sg-01a109d180b54df66
+      - sg-07b1382306906d395
+      SubnetIds:
+      - subnet-006328ca0ed406b88
+      - subnet-0898ea6b5951e99eb
+Parameters:
+  ACTIVATELOG:
+    Default: true
+    Description: LogDetailsCloudWatch
+    Type: String
+  AccessControl:
+    Default: BucketOwnerFullControl
+    Description: AWS S3 bucket for aws
+    Type: String
+  BucketName:
+    Default: lake-nona-integrations-qahouseevent-sftp-qa
+    Description: AWS S3 bucket name for HOUSEEVENT SFTP Connection
+    Type: String
+  DBSECRET:
+    Default: rds-db-credentials/cluster-IUEKOOPRVEMNRK4FZZ3OYSD4XM/lakenonaadmin
+    Description: Data Base Secret
+    Type: String
+  DBTABLEHOUSEEVENT:
+    Default: house-event
+    Description: Table for HouseEvent
+    Type: String
+  FAILEDFOLDER:
+    Default: Failed
+    Description: S3 Failed Bucket
+    Type: String
+  HouseEventQueueName:
+    Default: lnb-integrations-house-event-queue-qa
+    Description: AWS SQS Queue Name HouseEvent Integration
+    Type: String
+  LambdaRole:
+    Default: arn:aws:iam::872950281716:role/LakeNona-Lambda-Integrations
+    Description: Lambda Role
+    Type: String
+  MessageRetentionPeriod:
+    Default: '12800'
+    Description: AWS SQS Message retention period
+    Type: String
+  PROCESSEDFOLDER:
+    Default: Processed
+    Description: S3 Success Bucket
+    Type: String
+  REGION:
+    Default: us-east-1
+    Description: AWS REGION
+    Type: String
+  S3Event:
+    Default: s3:ObjectCreated:*
+    Description: SQS topic event to monitor for S3 subscription
+    Type: String
+  Stage:
+    Default: qa
+    Description: Stage
+    Type: String
+  SystemProject:
+    Default: HouseEvent
+    Description: System to Integrate
+    Type: String
+  VisibilityTimeout:
+    Default: '900'
+    Description: AWS Message Checkout Time
+    Type: String
+Resources:
+  HouseEventDTBSQS:
+    Properties:
+      KmsMasterKeyId:
+        Fn::GetAtt:
+        - KMSEncryptionKey
+        - Arn
+      MessageRetentionPeriod:
+        Ref: MessageRetentionPeriod
+      QueueName:
+        Ref: HouseEventQueueName
+      VisibilityTimeout:
+        Ref: VisibilityTimeout
+    Type: AWS::SQS::Queue
+  HouseEventLambda:
+    DependsOn:
+    - HouseEventDTBSQS
+    Properties:
+      CodeUri: s3://lake-nona-integrations-cicd-artifacts-lakehouseevents-qa/52784cc1ab59cb840266fbb68a2de49d
+      Environment:
+        Variables:
+          BUCKET:
+            Ref: BucketName
+          ENTITY_NAME:
+            Ref: DBTABLEHOUSEEVENT
+          MAX_OF_FILES: 5
+      Events:
+        MySQSEvent:
+          Properties:
+            BatchSize: 10
+            Queue:
+              Fn::GetAtt:
+              - HouseEventDTBSQS
+              - Arn
+          Type: SQS
+      Handler: com.lakenona.integrations.house_event.HouseEventHandler
+      Policies: AWSLambdaFullAccess
+      Role:
+        Ref: LambdaRole
+      Runtime: java8
+    Type: AWS::Serverless::Function
+  KMSEncryptionKey:
+    Properties:
+      Description: Key Encryption
+      KeyPolicy:
+        Id: key-consolepolicy-3
+        Statement:
+        - Action: kms:*
+          Effect: Allow
+          Principal:
+            AWS:
+            - arn:aws:iam::872950281716:role/service-role/CloudformationServiceRole
+            - arn:aws:iam::872950281716:root
+          Resource: '*'
+          Sid: Enable IAM User Permissions
+        - Action:
+          - kms:Decrypt
+          - kms:Encrypt
+          - kms:GenerateDataKey*
+          Effect: Allow
+          Principal:
+            Service: sns.amazonaws.com
+          Resource: '*'
+        - Action:
+          - kms:Decrypt
+          - kms:Encrypt
+          - kms:GenerateDataKey
+          Effect: Allow
+          Principal:
+            Service: s3.amazonaws.com
+          Resource: '*'
+        Version: 2012-10-17
+    Type: AWS::KMS::Key
+  MySQSQueuePolicy:
+    DependsOn:
+    - HouseEventDTBSQS
+    Properties:
+      PolicyDocument:
+        Statement:
+        - Action:
+          - SQS:SendMessage
+          Condition:
+            ArnLike:
+              aws:SourceArn:
+                Fn::Join:
+                - ''
+                - - 'arn:aws:s3:*:*:'
+                  - Ref: BucketName
+          Effect: Allow
+          Principal:
+            AWS: '*'
+          Resource: '*'
+        - Action:
+          - kms:*
+          Effect: Allow
+          Resource:
+            Fn::GetAtt:
+            - KMSEncryptionKey
+            - Arn
+        Version: 2008-10-17
+      Queues:
+      - Ref: HouseEventDTBSQS
+    Type: AWS::SQS::QueuePolicy
+  SourceBucket:
+    DependsOn:
+    - MySQSQueuePolicy
+    Properties:
+      AccessControl:
+        Ref: AccessControl
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+            SSEAlgorithm: AES256
+      BucketName:
+        Ref: BucketName
+      NotificationConfiguration:
+        QueueConfigurations:
+        - Event:
+            Ref: S3Event
+          Filter:
+            S3Key:
+              Rules:
+              - Name: prefix
+                Value: HouseEvent
+          Queue:
+            Fn::GetAtt:
+            - HouseEventDTBSQS
+            - Arn
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: 'true'
+        BlockPublicPolicy: 'true'
+        IgnorePublicAcls: 'true'
+        RestrictPublicBuckets: 'true'
+    Type: AWS::S3::Bucket
+Transform: AWS::Serverless-2016-10-31

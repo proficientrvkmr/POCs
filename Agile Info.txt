@@ -1,0 +1,31 @@
+Terms:
+------
+Agility - ready to accept the changes
+MVP - Most Valuable Product
+MOSCOW - (Must do, Should do, Could do) Type of task pick in spring planning
+Story Point - 5 (3 days), 8 (5 days)
+Avg Developer Work Speed - 6.5 hr / day
+Team Member - Project Owner, Scrum Master, Scrum Team
+
+
+Reason to go agile:
+----------------------
+1. Involve all users (end user/client)
+2. Reach in market asap.
+3. Easy to including the new enhancement
+4. To validate, is this the right product ?
+5. Get suggestion / feedback from client or end user.
+
+Type of projects:
+-----------------
+	- Fixed price project
+	- Dynamic price project
+
+How does Agile works:
+----------------------
+1. Make a list
+2. Size up the things
+3. set priorites (MOSCOW)
+4. Start excecuting
+5. Update plan on the GO
+

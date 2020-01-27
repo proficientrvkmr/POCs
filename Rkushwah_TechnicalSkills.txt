@@ -1,0 +1,68 @@
+Core Language: Java
+
+1. 	Spring:	
+		A)	Spring Boot.
+		B)	Spring Core.
+		C)	Spring Data.
+		D)	Spring Security.
+		E) 	Spring Cloud: 	Service Discovery(Eureka), API Gateway(Zuul), Configuration Server(Spring Config), Consumer-Driven Contracts (Spring Cloud Contract), 
+							Spring Cloud Feign, Spring Cloud Security(OAuth2Sso), Circuit Breaker(Hystrix), Spring Cloud Sleuth(Zipkin), Spring Boot Admin
+		F)	Spring Cloud Function.
+		G)	Spring Cloud For AWS.
+		H)	Spring Cloud For GCP.
+		I)	Spring Cloud Kubernetes.
+		
+2. 	Cloud Technology:
+		A)	AWS:	EC2, Lambda, Dynamo-DB, S3, RDS, CloudWatch, SNS, AWS Serverless Application Model (AWS SAM), CodeCommit, CodeBuild , 
+					CodeRepository, CodeDeployment (AWS CloudFormation)
+		B)	GCP:	App Engine, Compute Engine, Cloud Function, Cloud API, Cloud Repository, Kubernetes, Cloud SQL
+		
+3. 	Microservices Architecture:
+		A) Using Spring Cloud.
+		B) Using AWS Services.
+		C) Using GCP Services.	
+		D) Using Docker.
+		
+4. 	Docker Technology:
+		A) SWARN:	
+		B) KUBERNETES:	
+		C) Docker on Cloud: AWS-container, GCP-Kubernetes
+
+5. 	Application Development Strategies:
+		A) ServerLess Development.
+		B) Function Based Development (NanoService).
+		C) SOA Development.
+		D) Microservices based Development.
+		E) MonoLithic Development.
+		F) Amazon Storefronts Based.
+		G) Test Data Driven (TDD) Development.
+		
+6.	Mobile Technology:
+		A) Hybrid: 	Ionic, React-Native, Angular
+		B) Native: 	Android, React-Native
+		C) Responsive: 	BootStrap
+		
+7.	Front End Technology:
+		A) Angular 4,5,6.
+		B) JavaScript.
+		C) JQuery.
+		D) Backbone.
+		E) HTML.
+		F) CSS.
+		G) Bootstrap.
+
+8.  Java Technologies:
+		A) Core Java, Collection, Generics, Concurrency, Memory Management
+		A) JSP
+		B) Servlet
+		C) Struts 1.x
+		D) Hibernate
+		
+9. 	In Future Plan:
+		A) SEO Rank
+		B) SSL Certificates - DONE
+		C) Buy Domain
+		D) Machine Learning: Scala, Spark
+		E) Big Data: Data mining
+		F) PHP: Wordpress, Drupal, Laravel
+		

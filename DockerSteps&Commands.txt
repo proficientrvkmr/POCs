@@ -1,0 +1,71 @@
+Docker is same like Build Tools: MAVEN, GRADLE
+https://docs.docker.com/engine/docker-overview/#docker-objects
+
+Terminology: 
+-------------------
+
+-	Docker Engine (LIKE JVM)
+-	Docker Hub	(LIKE maven central repository)
+-	Docker Images (LIKE wrapped java source code in jar or war)
+-	Docker Container (Like Application COntext: Runtime environment of Images)
+- 	Docker Daemon ( Build images, Runs & manage Containers)
+
+
+Docker Steps:
+-----------------
+1. Introduction of Docker:
+2. Installation of Docker s/w.
+3. Pull Example from Github.
+4. Create a DockerFile.
+5. Build Docker image.
+6. Run it.
+7. Commit & Push to DockerHub.
+8. Run directly in another environment.
+
+Google JIB Steps:-
+----------------
+1. Pull Another Example for Build with JIB.
+2. Add JIB plugin and configuration in build.gradle.
+3. Build image.
+4. Run it.
+5. Push it to DockerHub.
+
+Docker Common commands:
+------------------------
+1. 	Build Image:
+	docker build --tag=friendlyhello
+
+2.	List all Docker Images
+	docker images -a 
+		OR 
+	docker images
+
+3. 	List All Running Docker Containers
+	docker ps
+	
+4.	List All Docker Containers
+	docker ps -a
+	
+5.	Start a Docker Container
+	docker start <container name>
+	
+6.	Stop a Docker Container
+	docker stop <container name>
+	
+7.	Kill All Running Containers
+	docker kill $(docker ps -q)
+	
+8. 	Remove a Docker Image
+	docker rmi <image name>
+
+9.	Delete All Docker Images
+	docker rmi $(docker images -q)
+	
+10.	Map a Host Port to a Container Port
+	-p <host port>: <container port>
+	Example:
+	docker run -p 8080:8080 <image name>
+
+
+
+

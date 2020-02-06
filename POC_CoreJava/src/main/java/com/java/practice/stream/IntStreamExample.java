@@ -2,18 +2,19 @@ package com.java.practice.stream;
 
 import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class IntStreamExample {
 
     public static void main(String[] args) {
-        getStatsOfList();
-        searchKeyInList();
-
-        convertIntArrayToStream();
-        convertIntArrayToIntegerList();
         totalSumOfIntArray();
+        convertIntArrayToIntegerList();
+        convertIntArrayToStream();
+        searchKeyInList();
+        getStatsOfList();
+        groupingOfIntegers();
     }
 
     private static void totalSumOfIntArray() {
@@ -79,5 +80,16 @@ public class IntStreamExample {
         System.out.println("Count: " + intSummaryStatistics.getCount());
         System.out.println("Max: " + intSummaryStatistics.getMax());
         System.out.println("Min: " + intSummaryStatistics.getMin());
+    }
+
+    private static void groupingOfIntegers() {
+        System.out.println("Grouping of Integers: ");
+
+        int[] integerList = {21, 31, 43, 55, 43, 43, 23, 23, 55, 23};
+        Map<Integer, Long> group = IntStream.of(integerList).boxed().collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()));
+
+        group.entrySet().forEach(System.out::println);
+
+
     }
 }

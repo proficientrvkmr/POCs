@@ -7,9 +7,9 @@ public class SingletonPattern {
     public static void main(String[] args) {
         SingletonDemo objOne = SingletonDemo.getInstance();
         SingletonDemo objTwo = SingletonDemo.getInstance();
-        SingletonDemo objThree = null;
+        Class<?> objThree = null;
         try {
-            objThree = (SingletonDemo) Class.forName("SingletonDemo").newInstance();
+            objThree = Class.forName("SingletonDemo");
         } catch (Exception e) {
             System.out.println(e);
         }

@@ -3,6 +3,7 @@ package com.java.practice.stream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class FlatMapExample1 {
     public static void main(String[] args) {
@@ -12,18 +13,18 @@ public class FlatMapExample1 {
                 new User("Radha", 33, Arrays.asList("8", "9"))
         );
 
-//        List<List<String>> collectLost = userList.stream()
-//                .map(User::getPhoneNumbers)
-//                .collect(Collectors.toList());
-//
-//        collectLost.forEach(System.out::println);
+        List<List<String>> collectLost = userList.stream()
+                .map(User::getPhoneNumbers)
+                .collect(Collectors.toList());
 
-//        userList.forEach(
-//                user -> user.getPhoneNumbers().stream()
-//                        .filter(phone -> phone.equals("5"))
-//                        .map(phone -> user)
-//                        .forEachOrdered(System.out::println)
-//        );
+        collectLost.forEach(System.out::println);
+
+        userList.forEach(
+                user -> user.getPhoneNumbers().stream()
+                        .filter(phone -> phone.equals("5"))
+                        .map(phone -> user)
+                        .forEachOrdered(System.out::println)
+        );
 
         Optional<String> phoneNos = userList.stream().map(user -> user.getPhoneNumbers())
                 .flatMap(phoneNoList -> phoneNoList.stream())

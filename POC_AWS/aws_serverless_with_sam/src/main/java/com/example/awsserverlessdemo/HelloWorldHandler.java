@@ -7,6 +7,6 @@ public class HelloWorldHandler implements RequestHandler<Object, String> {
 
     public String handleRequest(Object input, Context context) {
         context.getLogger().log("Input: " + input);
-        return "Hello World - " + input;
+        return "Hello World From lambda";
     }
 }

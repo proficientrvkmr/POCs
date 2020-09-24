@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Sample SAM Template for sam-app
+
+Globals:
+    Function:
+        Timeout: 20
+        MemorySize: 512
+
+Resources:
+  GetOrdersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./target/aws-serverless-with-sam-0.0.1-SNAPSHOT.jar
+      Handler: com.example.awsserverlessdemo.GetOrdersHandler::handleRequest
+      Runtime: java8
+      Events:
+        GetOrders:
+          Type: Api
+          Properties:
+            Path: /orders/all
+            Method: get
+  CreateOrderFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: ./target/aws-serverless-with-sam-0.0.1-SNAPSHOT.jar
+      Handler: com.example.awsserverlessdemo.CreateOrderHandler::handleRequest
+      Runtime: java8
+      Events:
+        CreateOrder:
+          Type: Api
+          Properties:
+            Path: /orders
+            Method: post
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./target/aws-serverless-with-sam-0.0.1-SNAPSHOT.jar
+      Handler: com.example.awsserverlessdemo.HelloWorldHandler::handleRequest
+      Runtime: java8
+      Events:
+        GreetWorld:
+          Type: Api
+          Properties:
+            Path: /hello-world
+            Method: get

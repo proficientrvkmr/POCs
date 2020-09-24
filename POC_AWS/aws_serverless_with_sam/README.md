@@ -113,37 +113,17 @@ as such the POM starts DynamoDB Local from the Dockerhub repository for integrat
 mvn verify
 ```
 
-### Running end to end tests through the SAM CLI Local endpoint
-Running the following end-to-end tests requires Python 3 and the `requests` pip
-package to be installed. For these tests to succeed,
-```bash
-pip3 install requests
-python3 src/test/resources/api_tests.py 3
-```
-
-The number that follows the test script name is the number of orders to create in the
-test. For these tests to work, you must follow the steps for [local development](#local-development).  
-
-# Appendix
 
 ## AWS CLI commands
 
 AWS CLI commands to package, deploy and describe outputs defined within the cloudformation stack:
 
 ```bash
-sam package \
-    --template-file template.yaml \
-    --output-template-file packaged.yaml \
-    --s3-bucket REPLACE_THIS_WITH_YOUR_S3_BUCKET_NAME
+sam package --template-file template.yaml --output-template-file packaged.yaml --s3-bucket REPLACE_THIS_WITH_YOUR_S3_BUCKET_NAME
 
-sam deploy \
-    --template-file packaged.yaml \
-    --stack-name sam-orderHandler \
-    --capabilities CAPABILITY_IAM \
-    --parameter-overrides MyParameterSample=MySampleValue
+sam deploy --template-file packaged.yaml --stack-name sam-orderHandler --capabilities CAPABILITY_IAM --parameter-overrides MyParameterSample=MySampleValue
 
-aws cloudformation describe-stacks \
-    --stack-name sam-orderHandler --query 'Stacks[].Outputs'
+aws cloudformation describe-stacks --stack-name sam-orderHandler --query 'Stacks[].Outputs'
 ```
 
 ## Bringing to the next level

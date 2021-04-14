@@ -1,0 +1,90 @@
+{
+  "currentWeek": 2,
+  "finishingWeekSchedules": {
+    "reservedHrs": {
+      "monReservedHrs": 1,
+      "tueReservedHrs": 2,
+      "wedReservedHrs": 3,
+      "thruReservedHrs": 1,
+      "friReservedHrs": 2,
+      "satReservedHrs": 3,
+      "sunReservedHrs": 3
+    },
+    "allocatedHrs": {
+      "monAllocatedHrs": 4,
+      "tueAllocatedHrs": 4,
+      "wedAllocatedHrs": 4,
+      "thruAllocatedHrs": 4,
+      "friAllocatedHrs": 4,
+      "satAllocatedHrs": 4,
+      "sunAllocatedHrs": 4
+    },
+    "remainingBalance": {
+      "monRemainingBalance": 4,
+      "tueRemainingBalance": 6,
+      "wedRemainingBalance": 4,
+      "thruRemainingBalance": 4,
+      "friRemainingBalance": 7,
+      "satRemainingBalance": 4,
+      "sunRemainingBalance": 2
+    }
+  },
+  "fittingWeekSchedules": {
+    "reservedHrs": {
+      "monReservedHrs": 1,
+      "tueReservedHrs": 2,
+      "wedReservedHrs": 3,
+      "thruReservedHrs": 1,
+      "friReservedHrs": 2,
+      "satReservedHrs": 3,
+      "sunReservedHrs": 3
+    },
+    "allocatedHrs": {
+      "monAllocatedHrs": 4,
+      "tueAllocatedHrs": 4,
+      "wedAllocatedHrs": 4,
+      "thruAllocatedHrs": 4,
+      "friAllocatedHrs": 4,
+      "satAllocatedHrs": 4,
+      "sunAllocatedHrs": 4
+    },
+    "remainingBalance": {
+      "monRemainingBalance": 4,
+      "tueRemainingBalance": 6,
+      "wedRemainingBalance": 4,
+      "thruRemainingBalance": 4,
+      "friRemainingBalance": 7,
+      "satRemainingBalance": 4,
+      "sunRemainingBalance": 2
+    }
+  },
+  "packagingWeekSchedules": {
+    "reservedHrs": {
+      "monReservedHrs": 1,
+      "tueReservedHrs": 2,
+      "wedReservedHrs": 3,
+      "thruReservedHrs": 1,
+      "friReservedHrs": 2,
+      "satReservedHrs": 3,
+      "sunReservedHrs": 3
+    },
+    "allocatedHrs": {
+      "monAllocatedHrs": 4,
+      "tueAllocatedHrs": 4,
+      "wedAllocatedHrs": 4,
+      "thruAllocatedHrs": 4,
+      "friAllocatedHrs": 4,
+      "satAllocatedHrs": 4,
+      "sunAllocatedHrs": 4
+    },
+    "remainingBalance": {
+      "monRemainingBalance": 4,
+      "tueRemainingBalance": 6,
+      "wedRemainingBalance": 4,
+      "thruRemainingBalance": 4,
+      "friRemainingBalance": 7,
+      "satRemainingBalance": 4,
+      "sunRemainingBalance": 2
+    }
+  }
+}

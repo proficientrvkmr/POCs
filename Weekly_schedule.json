@@ -5,7 +5,7 @@
       "monReservedHrs": 1,
       "tueReservedHrs": 2,
       "wedReservedHrs": 3,
-      "thruReservedHrs": 1,
+      "thurReservedHrs": 1,
       "friReservedHrs": 2,
       "satReservedHrs": 3,
       "sunReservedHrs": 3
@@ -14,7 +14,7 @@
       "monAllocatedHrs": 4,
       "tueAllocatedHrs": 4,
       "wedAllocatedHrs": 4,
-      "thruAllocatedHrs": 4,
+      "thurAllocatedHrs": 4,
       "friAllocatedHrs": 4,
       "satAllocatedHrs": 4,
       "sunAllocatedHrs": 4
@@ -23,7 +23,7 @@
       "monRemainingBalance": 4,
       "tueRemainingBalance": 6,
       "wedRemainingBalance": 4,
-      "thruRemainingBalance": 4,
+      "thurRemainingBalance": 4,
       "friRemainingBalance": 7,
       "satRemainingBalance": 4,
       "sunRemainingBalance": 2
@@ -34,7 +34,7 @@
       "monReservedHrs": 1,
       "tueReservedHrs": 2,
       "wedReservedHrs": 3,
-      "thruReservedHrs": 1,
+      "thurReservedHrs": 1,
       "friReservedHrs": 2,
       "satReservedHrs": 3,
       "sunReservedHrs": 3
@@ -43,7 +43,7 @@
       "monAllocatedHrs": 4,
       "tueAllocatedHrs": 4,
       "wedAllocatedHrs": 4,
-      "thruAllocatedHrs": 4,
+      "thurAllocatedHrs": 4,
       "friAllocatedHrs": 4,
       "satAllocatedHrs": 4,
       "sunAllocatedHrs": 4
@@ -52,7 +52,7 @@
       "monRemainingBalance": 4,
       "tueRemainingBalance": 6,
       "wedRemainingBalance": 4,
-      "thruRemainingBalance": 4,
+      "thurRemainingBalance": 4,
       "friRemainingBalance": 7,
       "satRemainingBalance": 4,
       "sunRemainingBalance": 2
@@ -63,7 +63,7 @@
       "monReservedHrs": 1,
       "tueReservedHrs": 2,
       "wedReservedHrs": 3,
-      "thruReservedHrs": 1,
+      "thurReservedHrs": 1,
       "friReservedHrs": 2,
       "satReservedHrs": 3,
       "sunReservedHrs": 3
@@ -72,7 +72,7 @@
       "monAllocatedHrs": 4,
       "tueAllocatedHrs": 4,
       "wedAllocatedHrs": 4,
-      "thruAllocatedHrs": 4,
+      "thurAllocatedHrs": 4,
       "friAllocatedHrs": 4,
       "satAllocatedHrs": 4,
       "sunAllocatedHrs": 4
@@ -81,7 +81,7 @@
       "monRemainingBalance": 4,
       "tueRemainingBalance": 6,
       "wedRemainingBalance": 4,
-      "thruRemainingBalance": 4,
+      "thurRemainingBalance": 4,
       "friRemainingBalance": 7,
       "satRemainingBalance": 4,
       "sunRemainingBalance": 2
